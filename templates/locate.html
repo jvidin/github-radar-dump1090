@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang=en>
+<head>
+
+	<meta charset="utf-8">
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+	<script type="text/javascript">
+	var x = document.getElementById("pizza");
+	
+	function showError(error) {
+		switch(error.code) {
+		case error.PERMISSION_DENIED:
+			x.innerHTML="User denied the request for Geolocation."
+			break;
+		case error.POSITION_UNAVAILABLE:
+			x.innerHTML="Location information is unavailable."
+			 break;
+		case error.TIMEOUT:
+			x.innerHTML="The request to get user location timed out."
+			break;
+		case error.UNKNOWN_ERROR:
+			x.innerHTML="An unknown error occurred."
+			break;
+			}
+	}
+
+	function getLocation() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(getPizzaLocations, showError);
+		}
+		else{x.innerHTML="Geolocation is not supported by this browser.";}
+	}
+
+	function getPizzaLocations(position) {
+		var d=new Date();
+		$.ajax({
+			url: "/getPizza",
+			data: {
+				lat: position.coords.latitude,
+				long: position.coords.longitude,
+				day: d.getDay()		
+			},
+		})
+		.done(function(data) {
+			$("#pizza_listing").html(data);
+		});
+	//	.fail(function() {
+	//		alert( "error" );
+	//	})
+	//	.always(function() {
+	//		alert( "complete" );
+	//	});
+	}
+
+	</script>
+
+
+	<title>It's my pizza and I want it now</title>
+	
+</head>
+
+<body>
+<div class="wrapper" style="text-align:center;">
+
+<div id="pizza_listing">
+	<button onclick=getLocation()> Click here to find pizza. </button>
+</div>
+
+</div>
+</body>
+</html>

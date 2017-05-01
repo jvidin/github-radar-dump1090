@@ -95,3 +95,9 @@ ENV/
 # Rope project settings
 .ropeproject
 
+# Power BI
+*.pibx
+.idea/vcs.xml
+.idea/workspace.xml
+power_bi.pbix
+sql/set_hour_day_week.sql
